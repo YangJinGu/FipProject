@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.icia.web.dao.UserDao">
+	
+	<resultMap type="com.icia.web.model.User" id="userResultMap">
+		<id column="USER_ID" property="userId"></id>
+		<result column="USER_PWD" property="userPwd"></result>
+		<result column="USER_NAME" property="userName"></result>
+		<result column="USER_EMAIL" property="userEmail"></result>
+		<result column="USER_NICKNAME" property="userNickname"></result>
+		<result column="USER_PHONENO" property="userPhoneNo"></result>
+		<result column="USER_ADDRESS" property="userAddress"></result>
+		<result column="USER_IMAGE" property="userImage"></result>
+		<result column="USER_STATUS" property="userStatus"></result>
+		<result column="USER_REG_DATE" property="userRegDate"></result>
+	</resultMap>
+	
+	<select id="userSelect" parameterType="String" resultMap="userResultMap">
+		SELECT USER_ID,
+		       NVL(USER_PWD, '') AS USER_PWD,
+		       NVL(USER_NAME, '') AS USER_NAME,
+		       NVL(USER_EMAIL, '') AS USER_EMAIL,
+		       NVL(USER_NICKNAME, '') AS USER_NICKNAME,
+		       NVL(USER_PHONENO, '') AS USER_PHONENO,
+		       NVL(USER_ADDRESS, '') AS USER_ADDRESS,
+		       NVL(USER_IMAGE, '') AS USER_IMAGE,
+		       NVL(USER_STATUS, 'N') AS USER_STATUS,
+		       NVL(TO_CHAR(USER_REG_DATE, 'YYYY-MM-DD HH24:MI:SS'), '') AS USER_REG_DATE
+		  FROM TBL_USER
+		 WHERE USER_ID = #{value}
+	</select>
+	
+	<select id="userEmailDuplicateCheck" parameterType="String" resultType="int">
+		SELECT COUNT(USER_ID)
+		  FROM TBL_USER
+		 WHERE USER_EMAIL = #{value}
+	</select>
+	
+	<select id="userNicknameDuplicateCheck" parameterType="String" resultType="int">
+		SELECT COUNT(USER_ID)
+		  FROM TBL_USER
+		 WHERE USER_NICKNAME = #{value}
+	</select>
+	
+	<insert id="userReg" parameterType="com.icia.web.model.User">
+		INSERT INTO TBL_USER (
+				    USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_NICKNAME, USER_PHONENO, USER_ADDRESS,
+				    USER_IMAGE, USER_STATUS, USER_REG_DATE) 
+				    
+				    VALUES (
+				    #{userId}, #{userPwd}, #{userName}, #{userEmail}, #{userNickname}, 
+				    #{userPhoneNo}, #{userAddress}, #{userImage}, #{userStatus}, SYSDATE)
+	</insert>
+</mapper>
