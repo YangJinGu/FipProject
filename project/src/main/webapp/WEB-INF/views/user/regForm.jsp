@@ -13,6 +13,8 @@
 		//영문 대소문자, 숫자로만 이루어진 4~12자리 정규식
 		var idPwCheck = /^[a-zA-Z0-9]{4,20}$/;
 		
+		var id = hansol;
+		
     	$(document).ready(function(){
     		//회원가입 버튼 눌렀을 때 ============
     		$("#btnUserReg").on("click", function(){
